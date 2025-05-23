@@ -57,16 +57,28 @@ function playRound(humanChoice,computerChoice){
     }
 
 }
-function playGame(){
-    for(let i =0; i<5;i++){
-        let humanChoice=getHumanChoice();
-        let computerChoice=getComputerChoice();
-        playRound(humanChoice,computerChoice)
-        console.log(`human: ${humanChoice},  computer: ${computerChoice}`)
+function playGame(humanChoice){
+    if(humanChoice==null || humanScore>=5 || computerScore>=5){
+        return;
     }
-    return (humanScore>computerScore)?"human wins":(humanScore===computerScore)?"draw":"computer wins"
+    let computerChoice=getComputerChoice();
+    playRound(humanChoice,computerChoice);
+    const scoreboard=document.querySelector("p");
+    const text=document.querySelector(".text");
+    const winner=document.querySelector(".winner");
+    scoreboard.textContent=(`human: ${humanScore},  computer: ${computerScore}`);
+    text.textContent=(`human: ${humanChoice},  computer: ${computerChoice}`);
+    winner.textContent=(humanScore>computerScore)?"human wins":(humanScore===computerScore)?"draw":"computer wins";
+    if(computerScore>=5 || humanScore>=5){
+        winner.textContent=(humanScore>computerScore)?"human won the game":(humanScore===computerScore)?"draw":"computer won the game"
+    }
 }
-
+const buttons=document.querySelectorAll("button")
+buttons.forEach((button)=>{
+    button.addEventListener("click",(e)=>{
+        playGame(e.target.textContent);
+    })
+})
 let computerScore=0,humanScore=0;
 
 console.log(`${playGame()}`)
